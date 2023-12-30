@@ -22,6 +22,14 @@
      <exec.mainClass>dev.garvis.mcesbungee.App</exec.mainClass>
   </properties>
 
+  <distributionManagement>
+    <repository>
+      <id>github</id>
+      <name>GitHub Packages</name>
+      <url>https://maven.pkg.github.com/dgarvis/minecraft-bungee-events</url>
+    </repository>
+  </distributionManagement>
+
   <repositories>
 
     <repository>
