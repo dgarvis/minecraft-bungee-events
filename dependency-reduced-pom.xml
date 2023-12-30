@@ -2,7 +2,7 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
   <modelVersion>4.0.0</modelVersion>
   <groupId>dev.garvis.mcesbungee</groupId>
-  <artifactId>mces-bungee</artifactId>
+  <artifactId>minecraft-bungee-events</artifactId>
   <name>mces-bungee</name>
   <version>1.1-SNAPSHOT</version>
   <url>http://www.example.com</url>
@@ -103,6 +103,13 @@
       </exclusions>
     </dependency>
   </dependencies>
+  <distributionManagement>
+    <repository>
+      <id>github</id>
+      <name>GitHub Packages</name>
+      <url>https://maven.pkg.github.com/dgarvis/minecraft-bungee-events</url>
+    </repository>
+  </distributionManagement>
   <properties>
     <maven.compiler.target>17</maven.compiler.target>
     <exec.mainClass>dev.garvis.mcesbungee.App</exec.mainClass>
