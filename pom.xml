@@ -7,7 +7,7 @@
   <modelVersion>4.0.0</modelVersion>
 
   <groupId>dev.garvis.mcesbungee</groupId>
-  <artifactId>mces-bungee</artifactId>
+  <artifactId>minecraft-bungee-events</artifactId>
   <version>1.1-SNAPSHOT</version>
 
   <name>mces-bungee</name>
