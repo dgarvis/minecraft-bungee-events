@@ -3,52 +3,10 @@
 #+date: <2023-11-21 Tue>
 
 * Overview
-The primary goal of this system is to tie together the in game chat between seperate minecraft servers.
-To acomplish this, an event system is implemented that focus on chat messages and server join events
-in the first version, however, could easily be expanded to have more events added or other applications
-listening.
+This emits events into a kafka topic for bungee.
 
-* Architecture
-The system is made up of two parts
-- Messaging Bus :: Kafka is used as the messaging bus and handles queues that severs can publish and 
-  subscribe to.
-- Spigot Plugin :: This is a java plugin that publishes events into the messages bus and listens to events
-  to react to them.
-- BungeeCord Plugin :: This is a java plugin that publishes events into the message for bungeecord.
-
-** Events
-*** DONE ChatMessagePublished
-Message is published when a player sends a message.
-  #+begin_src json 
-  {
-    "eventType": "CHAT_MESSAGE_PUBLISHED",
-    "server": "string",
-    "playerUUID": "string",
-    "playerName": "string",
-    "message": "string"
-  }
-  #+end_src
-*** DONE PlayerJoinedServer
-Message is published when a player connects to a specific server.
-  #+begin_src json
-  {
-    "eventType": "PLAYER_JOINED_SERVER",
-    "server": "string",
-    "playerUUID": "string",
-    "playerName": "string"
-  }
-  #+end_src
-*** DONE PlayerLeftServer
-Message is published when a player leaves a specific server.
-#+begin_src json
-{
-  "eventType": "PLAYER_LEFT_SERVER",
-  "server": "string",
-  "playerUUID": "string",
-  "playerName": "string"
-}
-#+end_src
-*** DONE PlayerConnected
+* Events
+** DONE PlayerConnected
 Message is published when a player connects to a bungeecord network.
 #+begin_src json
 {
@@ -57,7 +15,7 @@ Message is published when a player connects to a bungeecord network.
   "playerName": "string"
 }
 #+end_src
-*** DONE PlayerDisconnected
+** DONE PlayerDisconnected
 Message is published when a player disconnects from a bungeecord network.
   #+begin_src json
   {
@@ -66,198 +24,8 @@ Message is published when a player disconnects from a bungeecord network.
     "playerName": "string"
   }
   #+end_src
-*** DONE PlayerMoved
-Message is published when a player moves
-  #+begin_src json
-  {
-    "eventType": "PLAYER_MOVED",
-    "playerUUID": "string",
-    "playerName": "string",
-    "server": "string",
-    "fromWorld": "string",
-    "fromX": double,
-    "fromY": double,
-    "fromZ": double,
-    "toWord": "string",
-    "toX": double,
-    "toY": double,
-    "toZ": double
-  }
-  #+end_src
-*** DONE PlayerDeath
-Message is published when a player dies
-  #+begin_src json
-  {
-    "eventType": "PLAYER_DIED",
-    "playerUUID": "string",
-    "playerName": "string",
-    "server": "string",
-    "world": "string",
-    "x": double,
-    "y": double,
-    "z": double,
-    "message": "string
-  }
-  #+end_src
-*** DONE BlockBroken
-Message is published when a player breaks a block
-  #+begin_src json
-  {
-    "eventType": "BLOCK_BROKEN",
-    "playerUUID": "string",
-    "playerName": "string",
-    "server": "string",
-    "blockType": "string",
-    "x": double,
-    "y": double,
-    "z": double
-  }
-  #+end_src
-*** DONE BlockPlaced
-Message is published when a player places a block
-  #+begin_src json
-  {
-    "eventType": "BLOCK_PLACED",
-    "playerUUID": "string",
-    "playerName": "string",
-    "server": "string",
-    "blockType": "string",
-    "x": double,
-    "y": double,
-    "z": double,
-    "placedAgainst": "string"
-  }
-  #+end_src
-*** DONE PlayerDamaged
-Message is published when a player takes damage.
-  #+begin_src json
-  {
-    "eventType": "PLAYER_DAMAGED",
-    "server": "string",  
-    
-    "playerUUID": "string",
-    "playerName": "string",
 
-    "x": double,
-    "y": double,
-    "z": double,
-
-    "amount": double,
-    "cause": "string",
-    "damageFrom": "string"    
-  }
-  #+end_src
-*** DONE PlayerDoesDamaged
-Message is published when a player does damage.
-  #+begin_src json
-  {
-    "eventType": "PLAYER_DOES_DAMAGE",
-    "server": "string",  
-    
-    "playerUUID": "string",
-    "playerName": "string",
-
-    "x": double,
-    "y": double,
-    "z": double,
-
-    "amount": double,
-    "cause": "string",
-    "damageTo": "string"    
-  }
-  #+end_src
-*** DONE PlayerDamagesPlayer
-Message is published when a player does damage to another player.
-  #+begin_src json
-  {
-    "eventType": "PLAYER_DOES_DAMAGE_TO_PLAYER",
-    "server": "string",  
-    
-    "playerUUID": "string",
-    "playerName": "string",
-
-    "x": double,
-    "y": double,
-    "z": double,
-
-    "attackedPlayerUUID": "string",
-    "attackedPlayerName": "string",
-
-    "attackedPlayerX": double,
-    "attackedPlayerY": double,
-    "attackedPlayerZ": double,
-
-    "amount": double,
-    "cause": "string",
-
-
-  }
-  #+end_src
-*** DONE ItemCrafted
-Message is publish when a player crafts an item.
-#+begin_src json
-{
-  "eventType": "ITEM_CRAFTED",
-  "playerUUID": "string",
-  "playerName": "string",
-  "server": "string",
-  "blockType": "string",
-  "amount": double
-}
-#+end_src
-*** TODO ChestOpened
-*** DONE PlayerEntersBed
-Message is published when a player enters the bed.
-#+begin_src json
-{
-  "eventType": "PLAYER_ENTERED_BED",
-  "playerUUID": "string",
-  "playerName": "string",
-  "server": "string",
-
-  "bedType": "string",
-
-  "world": "string",
-  "x": double,
-  "y": double,
-  "z": double
-}
-#+end_src
-*** DONE PlayerLeavesBed
-Message is published when a player leaves the bed.
-#+begin_src json
-{
-  "eventType": "PLAYER_LEFT_BED",
-  "playerUUID": "string",
-  "playerName": "string",
-  "server": "string",
-
-  "bedType": "string",
-
-  "world": "string",
-  "x": double,
-  "y": double,
-  "z": double
-}
-#+end_src
-*** DONE PlayerPotionEffect
-{
-  "eventType": "PLAYER_POTION_EFFECT",
-  "playerUUID": "string",
-  "playerName": "string",
-  "server": "string",
-
-  "action": "ADDED|CHANGED|CLEARED|REMOVED",
-  "cause": "string",
-
-  "type": "string",
-  "duration": int, # In ticks
-  "amplifier": int,
-}
-*** TODO ItemEnchanted
-*** TODO TradedWithVillager
-
-** Plugin Commands
+* TODO Plugin Commands
 Interaction with the plugin should be simple, where the jar file itself is just placed within the plugin directory
 for bukkit.
 
@@ -265,8 +33,3 @@ From within the game, an op level user may use the following commands:
 - /mcevents connect <server name> <kafka url> :: Which will establish the name of the server
   and connect to the kafka system to publish and listen for messages.
 - /mcevents disconnect :: which will clear the config.
-* Note
-While building this series of plugins, it looks like a chat and player announce across all
-servers in the network might be doable with only a bungeecord plugin. Based on a very quick
-glance at the docs, it can see chat messages and can send messages to other servers the
-sending player is not on. It could also do the same with connect and disconnect status.
